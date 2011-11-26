@@ -327,6 +327,41 @@
 		
 		}
 		
+		else if ($input[0] == "lists") {
+		
+			$username = $input[1];
+			$list = $input[2];
+			unset($input[0]);
+			unset($input[1]);
+			unset($input[2]);
+			$message = implode(" ", $input);
+		
+			// check authentication status
+			$auth = check_auth();
+		
+			// If oauth values aren't set, assumed that the user hasn't run setup yet.
+			if ($auth == false) { 
+				echo "Unable to send dm. You must run setup and authenticate first."; 
+			}		
+			else {		
+						
+				// get logged in user's screen_name
+				$screen_name = get_screen_name();
+			
+				// create a new instance
+				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
+		
+				// add user to list
+				$res = $tweet->post('lists/members/create', array('screen_name' => $username, 'slug' => $list, 'owner_screen_name' => $screen_name));
+			
+				// display result
+				if (isset($res->error)) { echo $res->error; }
+				else { echo "$username successfully added to the $list list!"; }
+			
+			} // end else
+		
+		}
+		
 		else if ($input[0] == "add") {
 		
 			$username = $input[1];
@@ -347,7 +382,6 @@
 						
 				// get logged in user's screen_name
 				$screen_name = get_screen_name();
-				$result = system("echo $screen_name > screen_name.txt");
 			
 				// create a new instance
 				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
@@ -383,7 +417,6 @@
 						
 				// get logged in user's screen_name
 				$screen_name = get_screen_name();
-				$result = system("echo $screen_name > screen_name.txt");
 			
 				// create a new instance
 				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
