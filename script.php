@@ -32,7 +32,7 @@
 				echo "tw block <user> - Block user\r";
 				echo "tw unblock <user> - Unblock user\r";
 				echo "tw search <term> - Recent 5 matches\r\r";
-				echo "Note on list related commands: List names must use hypens in place of spaces and special characters.";
+				echo "Note: List names must use hypens in place of spaces and special characters. Use 'tw list' to view your current lists.";
 			} //end else ($auth is set)
 			
 		} //end else !$pin
