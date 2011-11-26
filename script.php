@@ -351,8 +351,9 @@
 				if (isset($res->error)) { echo $res->error; }
 				else { 
 					$inc=1;
-					foreach($res->results as $result):
-						echo "$result->slug\r\r";
+					foreach($res->lists as $list):
+						$slug = $list->slug;
+						echo "$slug\r";
 						$inc++;
 					endforeach;
 				}
