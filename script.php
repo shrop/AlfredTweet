@@ -26,9 +26,12 @@
 				echo "tw info <user> - Get User Info\r";
 				echo "tw follow <user> - Follow user\r";
 				echo "tw unfollow <user> - Unfollow user\r";
+				echo "tw add <user> <list> - Add user to list\r";
+				echo "tw remove <user> <list> - Remove user from list\r";
 				echo "tw block <user> - Block user\r";
 				echo "tw unblock <user> - Unblock user\r";
-				echo "tw search <term> - Recent 5 matches";
+				echo "tw search <term> - Recent 5 matches\r\r";
+				echo "Note on list related commands: List names must use hypens in place of spaces and special characters.";
 			} //end else ($auth is set)
 			
 		} //end else !$pin
@@ -322,6 +325,78 @@
 			} // end else
 		
 		}
+		
+		else if ($input[0] == "add") {
+		
+			$username = $input[1];
+			$list = $input[2];
+			unset($input[0]);
+			unset($input[1]);
+			unset($input[2]);
+			$message = implode(" ", $input);
+		
+			// check authentication status
+			$auth = check_auth();
+		
+			// If oauth values aren't set, assumed that the user hasn't run setup yet.
+			if ($auth == false) { 
+				echo "Unable to send dm. You must run setup and authenticate first."; 
+			}		
+			else {		
+						
+				// get logged in user's screen_name
+				$screen_name = get_screen_name();
+				$result = system("echo $screen_name > screen_name.txt");
+			
+				// create a new instance
+				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
+		
+				// add user to list
+				$res = $tweet->post('lists/members/create', array('screen_name' => $username, 'slug' => $list, 'owner_screen_name' => $screen_name));
+			
+				// display result
+				if (isset($res->error)) { echo $res->error; }
+				else { echo "$username successfully added to the $list list!"; }
+			
+			} // end else
+		
+		}
+		
+		else if ($input[0] == "remove") {
+		
+			$username = $input[1];
+			$list = $input[2];
+			unset($input[0]);
+			unset($input[1]);
+			unset($input[2]);
+			$message = implode(" ", $input);
+		
+			// check authentication status
+			$auth = check_auth();
+		
+			// If oauth values aren't set, assumed that the user hasn't run setup yet.
+			if ($auth == false) { 
+				echo "Unable to send dm. You must run setup and authenticate first."; 
+			}		
+			else {		
+						
+				// get logged in user's screen_name
+				$screen_name = get_screen_name();
+				$result = system("echo $screen_name > screen_name.txt");
+			
+				// create a new instance
+				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
+		
+				// remove user from list
+				$res = $tweet->post('lists/members/destroy', array('screen_name' => $username, 'slug' => $list, 'owner_screen_name' => $screen_name));
+			
+				// display result
+				if (isset($res->error)) { echo $res->error; }
+				else { echo "$username successfully removed from the $list list!"; }
+			
+			} // end else
+		
+		}
 	
 		else if ($input[0] == "block") {
 		
@@ -433,5 +508,31 @@
 		if ($ret['oAuthKey'] == "" || $ret['oAuthSecret'] == "") {  return false; }
 		else { return $ret; }
 	}
+	
 
+	function get_screen_name() {		
+		// check authentication status
+		$auth = check_auth();
+		
+		// If oauth values aren't set, assumed that the user hasn't run setup yet.
+		if ($auth == false) { return false; }		
+		else {		
+					
+			// create a new instance
+			$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
+		
+			// get logged in user's details
+			$res = $tweet->get('account/verify_credentials');
+			
+			// pass results if successful
+			if (isset($res->error)) { return false; }
+			else { 
+				// get logged in user's screen_name
+				$screen_name = $res->{'screen_name'};
+				return $screen_name; 
+			}		
+				
+		}					
+	}
+	
 ?>
