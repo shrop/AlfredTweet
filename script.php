@@ -341,7 +341,7 @@
 		
 			// If oauth values aren't set, assumed that the user hasn't run setup yet.
 			if ($auth == false) { 
-				echo "Unable to send dm. You must run setup and authenticate first."; 
+				echo "Unable show lists. You must run setup and authenticate first."; 
 			}		
 			else {		
 						
@@ -382,7 +382,7 @@
 		
 			// If oauth values aren't set, assumed that the user hasn't run setup yet.
 			if ($auth == false) { 
-				echo "Unable to send dm. You must run setup and authenticate first."; 
+				echo "Unable to modify list. You must run setup and authenticate first."; 
 			}		
 			else {		
 						
@@ -417,7 +417,7 @@
 		
 			// If oauth values aren't set, assumed that the user hasn't run setup yet.
 			if ($auth == false) { 
-				echo "Unable to send dm. You must run setup and authenticate first."; 
+				echo "Unable to modify list. You must run setup and authenticate first."; 
 			}		
 			else {		
 						
