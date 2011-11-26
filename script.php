@@ -366,10 +366,6 @@
 		
 			$username = $input[1];
 			$list = $input[2];
-			unset($input[0]);
-			unset($input[1]);
-			unset($input[2]);
-			$message = implode(" ", $input);
 		
 			// check authentication status
 			$auth = check_auth();
@@ -401,11 +397,7 @@
 		
 			$username = $input[1];
 			$list = $input[2];
-			unset($input[0]);
-			unset($input[1]);
-			unset($input[2]);
-			$message = implode(" ", $input);
-		
+
 			// check authentication status
 			$auth = check_auth();
 		
