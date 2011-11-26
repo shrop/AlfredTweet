@@ -352,11 +352,17 @@
 				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
 		
 				// add user to list
-				$res = $tweet->post('lists/members/create', array('screen_name' => $username, 'slug' => $list, 'owner_screen_name' => $screen_name));
+				$res = $tweet->post('lists', array('screen_name' => $screen_name));
 			
-				// display result
+				//display result(s)
 				if (isset($res->error)) { echo $res->error; }
-				else { echo "$username successfully added to the $list list!"; }
+				else { 
+					$inc=1;
+					foreach($res->results as $result):
+						echo "$result->slug\r\r"; }
+						$inc++;
+					endforeach;
+				}
 			
 			} // end else
 		
