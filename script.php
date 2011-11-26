@@ -26,12 +26,13 @@
 				echo "tw info <user> - Get User Info\r";
 				echo "tw follow <user> - Follow user\r";
 				echo "tw unfollow <user> - Unfollow user\r";
+				echo "tw lists - Show lists\r";
 				echo "tw add <user> <list> - Add user to list\r";
 				echo "tw remove <user> <list> - Remove user from list\r";
 				echo "tw block <user> - Block user\r";
 				echo "tw unblock <user> - Unblock user\r";
 				echo "tw search <term> - Recent 5 matches\r\r";
-				echo "Note on list related commands: List names must use hypens in place of spaces and special characters.";
+				echo "Note: List names must use hypens in place of spaces and special characters. Use 'tw list' to view your current lists.";
 			} //end else ($auth is set)
 			
 		} //end else !$pin
@@ -326,27 +327,57 @@
 		
 		}
 		
-		else if ($input[0] == "add") {
-		
-			$username = $input[1];
-			$list = $input[2];
-			unset($input[0]);
-			unset($input[1]);
-			unset($input[2]);
-			$message = implode(" ", $input);
+		else if ($input[0] == "lists") {
 		
 			// check authentication status
 			$auth = check_auth();
 		
 			// If oauth values aren't set, assumed that the user hasn't run setup yet.
 			if ($auth == false) { 
-				echo "Unable to send dm. You must run setup and authenticate first."; 
+				echo "Unable show lists. You must run setup and authenticate first."; 
 			}		
 			else {		
 						
 				// get logged in user's screen_name
 				$screen_name = get_screen_name();
-				$result = system("echo $screen_name > screen_name.txt");
+			
+				// create a new instance
+				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
+		
+				// add user to list
+				$res = $tweet->get('lists', array('screen_name' => $screen_name));
+			
+				//display result(s)
+				if (isset($res->error)) { echo $res->error; }
+				else { 
+					$inc=1;
+					foreach($res->lists as $list):
+						$slug = $list->slug;
+						echo "$slug\r";
+						$inc++;
+					endforeach;
+				}
+			
+			} // end else
+		
+		}
+		
+		else if ($input[0] == "add") {
+		
+			$username = $input[1];
+			$list = $input[2];
+		
+			// check authentication status
+			$auth = check_auth();
+		
+			// If oauth values aren't set, assumed that the user hasn't run setup yet.
+			if ($auth == false) { 
+				echo "Unable to modify list. You must run setup and authenticate first."; 
+			}		
+			else {		
+						
+				// get logged in user's screen_name
+				$screen_name = get_screen_name();
 			
 				// create a new instance
 				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
@@ -366,23 +397,18 @@
 		
 			$username = $input[1];
 			$list = $input[2];
-			unset($input[0]);
-			unset($input[1]);
-			unset($input[2]);
-			$message = implode(" ", $input);
-		
+
 			// check authentication status
 			$auth = check_auth();
 		
 			// If oauth values aren't set, assumed that the user hasn't run setup yet.
 			if ($auth == false) { 
-				echo "Unable to send dm. You must run setup and authenticate first."; 
+				echo "Unable to modify list. You must run setup and authenticate first."; 
 			}		
 			else {		
 						
 				// get logged in user's screen_name
 				$screen_name = get_screen_name();
-				$result = system("echo $screen_name > screen_name.txt");
 			
 				// create a new instance
 				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
