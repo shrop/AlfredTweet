@@ -26,6 +26,7 @@
 				echo "tw info <user> - Get User Info\r";
 				echo "tw follow <user> - Follow user\r";
 				echo "tw unfollow <user> - Unfollow user\r";
+				echo "tw lists - Show lists\r";
 				echo "tw add <user> <list> - Add user to list\r";
 				echo "tw remove <user> <list> - Remove user from list\r";
 				echo "tw block <user> - Block user\r";
