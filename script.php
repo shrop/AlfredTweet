@@ -352,7 +352,7 @@
 				$tweet = new TwitterOAuth($appkey1, $appkey2, $auth['oAuthKey'], $auth['oAuthSecret']);
 		
 				// add user to list
-				$res = $tweet->post('lists', array('screen_name' => $screen_name));
+				$res = $tweet->get('lists', array('screen_name' => $screen_name));
 			
 				//display result(s)
 				if (isset($res->error)) { echo $res->error; }
