@@ -359,7 +359,7 @@
 				else { 
 					$inc=1;
 					foreach($res->results as $result):
-						echo "$result->slug\r\r"; }
+						echo "$result->slug\r\r";
 						$inc++;
 					endforeach;
 				}
